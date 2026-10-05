@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <r3000a.hh>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -19,10 +20,17 @@ int main()
 {
     setup();
 
+    Memory* mem = new Memory();
+    mem->loadRom();
+    R3000A* cpu = new R3000A(mem);
+    cpu->reset();
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        cpu->cycle();
+
         // input
         // -----
         processInput(window);
@@ -109,7 +117,7 @@ void setup()
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return -1;
+        return;
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -119,7 +127,7 @@ void setup()
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
+        return;
     }
 
 

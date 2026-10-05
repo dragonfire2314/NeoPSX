@@ -17,6 +17,9 @@ FetchContent_MakeAvailable(glfw)
 # Define Executable
 add_executable(NeoPSX 
     src/main.cc
+    src/r3000a.cc
+    src/memory.cc
+    src/opcodes.cc
     src/glad.c
 )
 
